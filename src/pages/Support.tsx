@@ -63,66 +63,121 @@ const Support = () => {
   const handleSendMessage = () => {
     if (!chatMessage.trim()) return;
     
-    // Add user message to chat
+    // Add user message to chat history
     setChatHistory([...chatHistory, {message: chatMessage, isBot: false}]);
     
     // Simulate bot response
     setTimeout(() => {
-      let botResponse = "I'm not sure how to help with that. Could you try asking something about campus services, academic questions, or account help?";
-      
-      // Very simple response logic
-      const msg = chatMessage.toLowerCase();
-      if (msg.includes("password") || msg.includes("reset")) {
-        botResponse = "You can reset your password by clicking on the 'Forgot Password' link on the login page and following the instructions sent to your registered email.";
-      } else if (msg.includes("class") || msg.includes("materials") || msg.includes("subject")) {
-        botResponse = "You can access class materials by going to the Subjects page, selecting the specific course, and clicking on the 'Materials' button.";
-      } else if (msg.includes("club") || msg.includes("join")) {
-        botResponse = "To join a club, navigate to the Clubs page, find the club you're interested in, and click the 'Join' button.";
-      }
-      
-      setChatHistory(prev => [...prev, {message: botResponse, isBot: true}]);
+      setChatHistory(prev => [...prev, {
+        message: "Thank you for your message. A support representative will get back to you soon.",
+        isBot: true
+      }]);
     }, 1000);
     
     // Clear input
     setChatMessage("");
   };
   
-  const getFAQsByCategory = (category: string | null) => {
-    if (!category) return filteredFAQs;
+  const getFAQsByCategory = (category: string) => {
     return filteredFAQs.filter(faq => faq.category === category);
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Support Center</h1>
+        <h1 className="text-3xl font-bold">Support</h1>
         <Button>Contact Admin</Button>
       </div>
       
-      <Tabs defaultValue="chat" className="w-full">
+      <Tabs defaultValue="faq" className="w-full">
         <TabsList>
-          <TabsTrigger value="chat">Chat Support</TabsTrigger>
-          <TabsTrigger value="faq">FAQ</TabsTrigger>
+          <TabsTrigger value="faq">FAQs</TabsTrigger>
+          <TabsTrigger value="chat">Live Chat</TabsTrigger>
           <TabsTrigger value="tickets">Support Tickets</TabsTrigger>
         </TabsList>
         
+        <TabsContent value="faq" className="mt-4">
+          <div className="relative mb-4">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search FAQs..."
+              className="pl-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="academic">Academic</TabsTrigger>
+              <TabsTrigger value="campus">Campus</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="all" className="mt-4 space-y-4">
+              {filteredFAQs.length === 0 ? (
+                <div className="text-center py-10">
+                  <p className="text-muted-foreground">No FAQs found matching your search</p>
+                </div>
+              ) : (
+                filteredFAQs.map(faq => (
+                  <Card key={faq.id}>
+                    <CardHeader>
+                      <div className="flex items-start gap-2">
+                        <HelpCircle className="h-5 w-5 text-primary mt-0.5" />
+                        <CardTitle className="text-lg">{faq.question}</CardTitle>
+                      </div>
+                      <Badge variant="outline" className="mt-2">{faq.category}</Badge>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{faq.answer}</p>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </TabsContent>
+            
+            {["account", "academic", "campus"].map(category => (
+              <TabsContent key={category} value={category} className="mt-4 space-y-4">
+                {getFAQsByCategory(category).length === 0 ? (
+                  <div className="text-center py-10">
+                    <p className="text-muted-foreground">No FAQs found in this category</p>
+                  </div>
+                ) : (
+                  getFAQsByCategory(category).map(faq => (
+                    <Card key={faq.id}>
+                      <CardHeader>
+                        <div className="flex items-start gap-2">
+                          <HelpCircle className="h-5 w-5 text-primary mt-0.5" />
+                          <CardTitle className="text-lg">{faq.question}</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p>{faq.answer}</p>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </TabsContent>
+        
         <TabsContent value="chat" className="mt-4">
-          <Card className="h-[60vh] flex flex-col">
+          <Card className="h-[500px] flex flex-col">
             <CardHeader>
-              <CardTitle>Support Chat</CardTitle>
-              <CardDescription>Ask questions about campus services, academic matters, or technical help</CardDescription>
+              <CardTitle>Live Support Chat</CardTitle>
+              <CardDescription>Chat with our support team</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow overflow-auto">
+            <CardContent className="flex-1 overflow-auto space-y-4">
               <div className="space-y-4">
                 {chatHistory.map((chat, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${chat.isBot ? "justify-start" : "justify-end"}`}
-                  >
+                  <div key={index} className={`flex ${chat.isBot ? "justify-start" : "justify-end"}`}>
                     <div
-                      className={`max-w-[80%] rounded-lg p-3 ${
-                        chat.isBot 
-                          ? "bg-muted text-muted-foreground" 
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        chat.isBot
+                          ? "bg-muted text-muted-foreground"
                           : "bg-primary text-primary-foreground"
                       }`}
                     >
@@ -138,96 +193,35 @@ const Support = () => {
                   placeholder="Type your message..."
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSendMessage();
+                    }
+                  }}
                 />
-                <Button onClick={handleSendMessage}>Send</Button>
+                <Button onClick={handleSendMessage}>
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Send
+                </Button>
               </div>
             </CardFooter>
           </Card>
         </TabsContent>
         
-        <TabsContent value="faq" className="mt-4">
-          <div className="mb-4">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search FAQs..."
-                className="pl-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <Tabs defaultValue="all">
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="account">Account</TabsTrigger>
-              <TabsTrigger value="academic">Academic</TabsTrigger>
-              <TabsTrigger value="campus">Campus</TabsTrigger>
-            </TabsList>
-            
-            {["all", "account", "academic", "campus"].map((category) => (
-              <TabsContent key={category} value={category} className="mt-4">
-                <div className="space-y-4">
-                  {getFAQsByCategory(category === "all" ? null : category).map((faq) => (
-                    <Card key={faq.id}>
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between">
-                          <CardTitle className="text-lg">{faq.question}</CardTitle>
-                          <Badge variant="outline">{faq.category}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{faq.answer}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </TabsContent>
-        
         <TabsContent value="tickets" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Submit a Support Ticket</CardTitle>
-              <CardDescription>Get help with specific issues not covered in the FAQs</CardDescription>
+              <CardTitle>Support Tickets</CardTitle>
+              <CardDescription>Create and manage support tickets</CardDescription>
             </CardHeader>
-            <CardContent>
-              <form className="space-y-4">
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium mb-1">Subject</label>
-                  <Input id="subject" placeholder="Brief description of your issue" />
-                </div>
-                <div>
-                  <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
-                  <select className="w-full p-2 border rounded-md" id="category">
-                    <option>Technical Problem</option>
-                    <option>Account Issue</option>
-                    <option>Academic Question</option>
-                    <option>Campus Services</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
-                  <textarea
-                    id="description"
-                    className="min-h-[100px] w-full p-2 border rounded-md"
-                    placeholder="Please provide details about your issue..."
-                  ></textarea>
-                </div>
-              </form>
+            <CardContent className="space-y-4">
+              <div className="text-center py-10">
+                <FileText className="mx-auto h-10 w-10 text-muted-foreground mb-4" />
+                <p className="text-lg font-medium">No Active Tickets</p>
+                <p className="text-muted-foreground mb-4">Create a new ticket to get help from our support team</p>
+                <Button>Create New Ticket</Button>
+              </div>
             </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline">
-                <FileText className="mr-2 h-4 w-4" />
-                Attach Files
-              </Button>
-              <Button>Submit Ticket</Button>
-            </CardFooter>
           </Card>
         </TabsContent>
       </Tabs>

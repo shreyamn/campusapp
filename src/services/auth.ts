@@ -1,36 +1,37 @@
 
-import { User, UserRole } from "@/types";
+import { User } from "@/types";
 
-// Mock user storage - in a real app, this would use a real auth system
-let currentUser: User | null = null;
+// Local storage keys
+const USER_KEY = "campus-app-user";
+const AUTH_TOKEN_KEY = "campus-app-auth-token";
 
-export const loginUser = (user: User): void => {
-  currentUser = user;
-  localStorage.setItem("campus_app_user", JSON.stringify(user));
+// Save user to local storage
+export const saveUser = (user: User) => {
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  // For demo, we'll just use a dummy token
+  localStorage.setItem(AUTH_TOKEN_KEY, `demo-token-${user.id}`);
 };
 
-export const logoutUser = (): void => {
-  currentUser = null;
-  localStorage.removeItem("campus_app_user");
-};
-
+// Get current user from local storage
 export const getCurrentUser = (): User | null => {
-  if (currentUser) return currentUser;
+  const userStr = localStorage.getItem(USER_KEY);
+  if (!userStr) return null;
   
-  const savedUser = localStorage.getItem("campus_app_user");
-  if (savedUser) {
-    try {
-      currentUser = JSON.parse(savedUser);
-      return currentUser;
-    } catch (error) {
-      console.error("Error parsing saved user:", error);
-      return null;
-    }
+  try {
+    return JSON.parse(userStr) as User;
+  } catch (error) {
+    console.error("Error parsing user from localStorage:", error);
+    return null;
   }
-  
-  return null;
 };
 
+// Check if user is authenticated
 export const isAuthenticated = (): boolean => {
-  return getCurrentUser() !== null;
+  return !!localStorage.getItem(AUTH_TOKEN_KEY);
+};
+
+// Logout user
+export const logoutUser = () => {
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(AUTH_TOKEN_KEY);
 };
