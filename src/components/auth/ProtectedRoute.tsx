@@ -5,7 +5,7 @@ import { isAuthenticated } from "@/services/auth";
 const ProtectedRoute = () => {
   // If not authenticated, redirect to login page
   if (!isAuthenticated()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" />;
   }
 
   // If authenticated, render child routes

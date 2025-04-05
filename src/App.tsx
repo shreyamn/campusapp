@@ -47,7 +47,7 @@ const App = () => {
             {/* Auth route - redirect to dashboard if already logged in */}
             <Route
               path="/"
-              element={user ? <Navigate to="/dashboard" replace /> : <Auth setUser={setUser} />}
+              element={user ? <Navigate to="/dashboard" /> : <Auth setUser={setUser} />}
             />
 
             {/* Protected routes using AppLayout */}
@@ -60,7 +60,7 @@ const App = () => {
                 {/* Only show subjects to students */}
                 <Route 
                   path="/subjects" 
-                  element={user?.role === 'student' ? <Subjects /> : <Navigate to="/dashboard" replace />} 
+                  element={user?.role === 'student' ? <Subjects /> : <Navigate to="/dashboard" />} 
                 />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/support" element={<Support />} />

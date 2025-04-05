@@ -9,9 +9,9 @@ const Index = () => {
   useEffect(() => {
     // Redirect to dashboard if authenticated, otherwise to login
     if (isAuthenticated()) {
-      navigate("/dashboard", { replace: true });
+      navigate("/dashboard");
     } else {
-      navigate("/", { replace: true });
+      navigate("/");
     }
   }, [navigate]);
 
