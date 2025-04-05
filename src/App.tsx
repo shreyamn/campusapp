@@ -43,22 +43,17 @@ const App = () => {
             {/* Public route - redirect to dashboard if already logged in */}
             <Route
               path="/"
-              element={user ? <Navigate to="/dashboard" replace /> : <Auth />}
+              element={user ? <Navigate to="/dashboard" replace /> : <Auth setUser={setUser} />}
             />
 
-            {/* Protected routes - require authentication */}
-            <Route
-              element={
-                <AppLayout user={user} onLogout={handleLogout} />
-              }
-            >
-              <Route
-                path="/dashboard"
-                element={user ? <Dashboard user={user} /> : <Navigate to="/" replace />}
-              />
-              <Route path="/map" element={<Map />} />
-              <Route path="/events" element={<Events />} />
-              {/* Add other routes as needed */}
+            {/* Protected routes using AppLayout */}
+            <Route element={<AppLayout user={user} onLogout={handleLogout} />}>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard user={user} />} />
+                <Route path="/map" element={<Map />} />
+                <Route path="/events" element={<Events />} />
+                {/* Add other routes as needed */}
+              </Route>
             </Route>
 
             {/* Catch-all route */}
