@@ -11,6 +11,10 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Map from "./pages/Map";
 import Events from "./pages/Events";
+import Clubs from "./pages/Clubs";
+import Subjects from "./pages/Subjects";
+import Notifications from "./pages/Notifications";
+import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
@@ -52,6 +56,10 @@ const App = () => {
                 <Route path="/dashboard" element={<Dashboard user={user} />} />
                 <Route path="/map" element={<Map />} />
                 <Route path="/events" element={<Events />} />
+                <Route path="/clubs" element={<Clubs />} />
+                <Route path="/subjects" element={<Subjects />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/support" element={<Support />} />
                 {/* Add other routes as needed */}
               </Route>
             </Route>
