@@ -44,7 +44,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Public route - redirect to dashboard if already logged in */}
+            {/* Auth route - redirect to dashboard if already logged in */}
             <Route
               path="/"
               element={user ? <Navigate to="/dashboard" replace /> : <Auth setUser={setUser} />}
@@ -64,7 +64,6 @@ const App = () => {
                 />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/support" element={<Support />} />
-                {/* Add other routes as needed */}
               </Route>
             </Route>
 
