@@ -13,6 +13,25 @@ interface AuthProps {
 const Auth = ({ setUser }: AuthProps) => {
   const [activeTab, setActiveTab] = useState('login');
 
+  // Function to handle login success
+  const handleLoginSuccess = (user: User) => {
+    setUser(user);
+  };
+
+  // Function to handle signup success
+  const handleSignupSuccess = (user: User) => {
+    setUser(user);
+  };
+
+  // Function to handle tab switching
+  const handleLoginClick = () => {
+    setActiveTab('login');
+  };
+
+  const handleSignupClick = () => {
+    setActiveTab('signup');
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-campus-light p-4">
       <div className="w-full max-w-md">
@@ -35,10 +54,10 @@ const Auth = ({ setUser }: AuthProps) => {
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
               </TabsList>
               <TabsContent value="login">
-                <LoginForm setUser={setUser} />
+                <LoginForm onLoginSuccess={handleLoginSuccess} onSignupClick={handleSignupClick} />
               </TabsContent>
               <TabsContent value="signup">
-                <SignupForm setActiveTab={setActiveTab} />
+                <SignupForm onSignupSuccess={handleSignupSuccess} onLoginClick={handleLoginClick} />
               </TabsContent>
             </Tabs>
           </CardContent>
