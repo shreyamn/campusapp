@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -51,6 +52,16 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				campus: {
+					primary: '#3b82f6',    // blue
+					secondary: '#8b5cf6',  // purple
+					accent: '#10b981',     // green
+					student: '#3b82f6',    // blue for student elements
+					faculty: '#8b5cf6',    // purple for faculty elements
+					staff: '#10b981',      // green for staff elements
+					light: '#f3f4f6',      // light background
+					dark: '#1f2937',       // dark text
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
