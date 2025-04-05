@@ -69,7 +69,7 @@ export function AppSidebar({ user, onLogout }: AppSidebarProps) {
       name: "Subjects",
       icon: BookOpen,
       path: "/subjects",
-      showFor: ["student", "faculty"],
+      showFor: ["student"], // Changed: only show for students
     },
     {
       name: "Notifications",
