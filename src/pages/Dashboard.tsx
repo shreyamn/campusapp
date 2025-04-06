@@ -4,6 +4,12 @@ import StudentDashboard from "@/components/dashboard/StudentDashboard";
 import FacultyDashboard from "@/components/dashboard/FacultyDashboard";
 import StaffDashboard from "@/components/dashboard/StaffDashboard";
 import { Navigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { User as UserIcon, Settings, FileText } from "lucide-react";
+import AdminUsers from "@/components/dashboard/admin/AdminUsers";
+import AdminSettings from "@/components/dashboard/admin/AdminSettings";
+import AdminLogs from "@/components/dashboard/admin/AdminLogs";
 
 interface DashboardProps {
   user: User | null;
@@ -15,6 +21,9 @@ const Dashboard = ({ user }: DashboardProps) => {
     return <Navigate to="/" />;
   }
 
+  // State for admin dashboard views
+  const [adminView, setAdminView] = useState<'overview' | 'users' | 'settings' | 'logs'>('overview');
+
   const renderDashboard = () => {
     switch (user.role) {
       case "student":
@@ -24,7 +33,16 @@ const Dashboard = ({ user }: DashboardProps) => {
       case "staff":
         return <StaffDashboard user={user} />;
       case "admin":
-        // For admin, we'll show a basic dashboard
+        // For admin dashboard, show different views based on state
+        if (adminView === 'users') {
+          return <AdminUsers onBack={() => setAdminView('overview')} />;
+        } else if (adminView === 'settings') {
+          return <AdminSettings onBack={() => setAdminView('overview')} />;
+        } else if (adminView === 'logs') {
+          return <AdminLogs onBack={() => setAdminView('overview')} />;
+        }
+        
+        // Default overview
         return (
           <div className="space-y-6">
             <h1 className="text-2xl font-bold">Admin Dashboard</h1>
@@ -38,9 +56,36 @@ const Dashboard = ({ user }: DashboardProps) => {
               <div className="bg-white p-5 rounded-lg shadow">
                 <h2 className="text-lg font-semibold mb-3">Quick Actions</h2>
                 <ul className="space-y-2">
-                  <li className="text-primary hover:underline cursor-pointer">Manage Users</li>
-                  <li className="text-primary hover:underline cursor-pointer">System Settings</li>
-                  <li className="text-primary hover:underline cursor-pointer">View Logs</li>
+                  <li>
+                    <Button 
+                      variant="ghost" 
+                      className="flex items-center gap-2 text-primary hover:underline cursor-pointer w-full justify-start p-2"
+                      onClick={() => setAdminView('users')}
+                    >
+                      <UserIcon size={16} />
+                      <span>Manage Users</span>
+                    </Button>
+                  </li>
+                  <li>
+                    <Button 
+                      variant="ghost" 
+                      className="flex items-center gap-2 text-primary hover:underline cursor-pointer w-full justify-start p-2"
+                      onClick={() => setAdminView('settings')}
+                    >
+                      <Settings size={16} />
+                      <span>System Settings</span>
+                    </Button>
+                  </li>
+                  <li>
+                    <Button 
+                      variant="ghost" 
+                      className="flex items-center gap-2 text-primary hover:underline cursor-pointer w-full justify-start p-2"
+                      onClick={() => setAdminView('logs')}
+                    >
+                      <FileText size={16} />
+                      <span>View Logs</span>
+                    </Button>
+                  </li>
                 </ul>
               </div>
               <div className="bg-white p-5 rounded-lg shadow">
