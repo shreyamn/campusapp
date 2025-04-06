@@ -26,3 +26,15 @@ export interface MapLocation {
     y: number;
   };
 }
+
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  type: 'Academic' | 'Cultural' | 'Club' | 'Staff';
+  department?: Department;
+  organizer: string;
+}
