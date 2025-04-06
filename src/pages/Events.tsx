@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 import { Event } from "@/types";
 import EventsHeader from "@/components/events/EventsHeader";
 import EventsTabs from "@/components/events/EventsTabs";
-import { getAllEvents, getEventTypeColor, searchEvents } from "@/services/events";
-import { useToast } from "@/components/ui/toast";
+import CreateEventDialog from "@/components/events/CreateEventDialog";
+import { getAllEvents, getEventTypeColor, searchEvents, createEvent } from "@/services/events";
+import { useToast } from "@/hooks/use-toast";
 
 const Events = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   // Fetch events on component mount
@@ -63,17 +66,51 @@ const Events = () => {
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
 
+  const handleCreateEvent = async (eventData: Omit<Event, "id">) => {
+    try {
+      setIsSubmitting(true);
+      const newEvent = await createEvent(eventData);
+      
+      // Update the local state with the new event
+      setEvents((prevEvents) => [...prevEvents, newEvent]);
+      
+      // Close the dialog and show success message
+      setIsCreateDialogOpen(false);
+      toast({
+        title: "Success",
+        description: "Event created successfully!",
+      });
+    } catch (error) {
+      console.error("Failed to create event:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create event. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <EventsHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+        onOpenCreateDialog={() => setIsCreateDialogOpen(true)}
       />
       
       <EventsTabs 
         events={events}
         getEventTypeColor={getEventTypeColor}
         isLoading={loading}
+      />
+
+      <CreateEventDialog 
+        isOpen={isCreateDialogOpen} 
+        onClose={() => setIsCreateDialogOpen(false)}
+        onCreateEvent={handleCreateEvent}
+        isSubmitting={isSubmitting}
       />
     </div>
   );

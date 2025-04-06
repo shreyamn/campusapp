@@ -1,4 +1,3 @@
-
 import { Event } from "@/types";
 
 // Mock events data - later this would be fetched from an API
@@ -102,6 +101,27 @@ export const getEventById = async (id: string): Promise<Event | undefined> => {
   return new Promise((resolve) => {
     const event = mockEvents.find(event => event.id === id);
     setTimeout(() => resolve(event), 300);
+  });
+};
+
+// Create a new event
+export const createEvent = async (eventData: Omit<Event, "id">): Promise<Event> => {
+  // In a real app, this would be an API call to create a new event
+  return new Promise((resolve) => {
+    // Generate a new ID - in a real app this would be done by the backend
+    const newId = String(mockEvents.length + 1);
+    
+    // Create the new event with the generated ID
+    const newEvent: Event = {
+      id: newId,
+      ...eventData
+    };
+    
+    // Add to mock data (this would be handled by the backend in a real app)
+    mockEvents.push(newEvent);
+    
+    // Simulate network delay
+    setTimeout(() => resolve(newEvent), 500);
   });
 };
 

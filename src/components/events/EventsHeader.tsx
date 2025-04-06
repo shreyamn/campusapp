@@ -6,14 +6,19 @@ import { Filter, Search } from "lucide-react";
 interface EventsHeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  onOpenCreateDialog: () => void;
 }
 
-const EventsHeader = ({ searchQuery, setSearchQuery }: EventsHeaderProps) => {
+const EventsHeader = ({ 
+  searchQuery, 
+  setSearchQuery, 
+  onOpenCreateDialog 
+}: EventsHeaderProps) => {
   return (
     <>
       <div className="flex justify-between items-center">
         <h1 className="campus-heading">Events</h1>
-        <Button>+ Create Event</Button>
+        <Button onClick={onOpenCreateDialog}>+ Create Event</Button>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
