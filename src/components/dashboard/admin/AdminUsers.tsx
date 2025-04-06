@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Save, Plus, Trash } from "lucide-react";
@@ -22,7 +21,7 @@ const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   rollNumber: z.string().min(1, { message: "Roll number is required" }),
   role: z.enum(["student", "faculty", "staff", "admin"] as const),
-  department: z.string().optional(),
+  department: z.enum(["Biology", "Mathematics", "Computer Science", "Nursing", "Physics", "Chemistry", "Economics"] as const).optional(),
 });
 
 type UserFormValues = z.infer<typeof userFormSchema>;
@@ -66,7 +65,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
       name: "",
       rollNumber: "",
       role: "student",
-      department: "",
+      department: undefined,
     },
   });
 
@@ -110,7 +109,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
           email: email, // Update email if name or roll number changed
           rollNumber: data.rollNumber,
           role: data.role,
-          department: data.department || undefined
+          department: data.department
         } : user
       ));
       setEditingUser(null);
@@ -129,7 +128,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
         email: email,
         rollNumber: data.rollNumber,
         role: data.role,
-        department: data.department || undefined,
+        department: data.department,
       };
       setUsers([...users, newUser]);
       toast.success("New user added successfully");
@@ -144,7 +143,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
       name: user.name,
       rollNumber: user.rollNumber,
       role: user.role,
-      department: user.department || "",
+      department: user.department,
     });
   };
 
@@ -335,7 +334,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
                       name: "",
                       rollNumber: "",
                       role: "student",
-                      department: "",
+                      department: undefined,
                     });
                   }}
                 >

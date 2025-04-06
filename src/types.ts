@@ -29,7 +29,7 @@ export interface Event {
   location: string;
   type: EventType;
   organizer: string;
-  department?: string;
+  department?: Department;
 }
 
 // Club types
@@ -42,4 +42,16 @@ export interface Club {
   president: string;
   meetingDay: string;
   location: string;
+}
+
+// Map location types
+export interface MapLocation {
+  id: string;
+  name: string;
+  type: 'building' | 'lab' | 'cafeteria' | 'department' | 'staff' | 'other';
+  description: string;
+  coordinates: {
+    x: number;
+    y: number;
+  };
 }
