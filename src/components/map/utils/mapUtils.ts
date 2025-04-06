@@ -1,5 +1,5 @@
 
-export const getBadgeVariant = (type: string) => {
+export const getBadgeVariant = (type: string): "default" | "destructive" | "outline" | "secondary" => {
   switch (type) {
     case "building":
       return "default";

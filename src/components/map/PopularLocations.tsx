@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 interface PopularLocationsProps {
   locations: MapLocation[];
   onLocationClick: (location: MapLocation) => void;
-  getBadgeVariant: (type: string) => string;
+  getBadgeVariant: (type: string) => "default" | "destructive" | "outline" | "secondary";
 }
 
 const PopularLocations = ({ locations, onLocationClick, getBadgeVariant }: PopularLocationsProps) => {

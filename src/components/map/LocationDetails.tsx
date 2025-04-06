@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 interface LocationDetailsProps {
   location: MapLocation;
   onClose: () => void;
-  getBadgeVariant: (type: string) => string;
+  getBadgeVariant: (type: string) => "default" | "destructive" | "outline" | "secondary";
 }
 
 const LocationDetails = ({ location, onClose, getBadgeVariant }: LocationDetailsProps) => {
