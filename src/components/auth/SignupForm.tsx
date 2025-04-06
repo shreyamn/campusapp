@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Major, Department, StaffType, UserRole, User } from "@/types";
+import { saveUser } from "@/services/auth";
 
 interface SignupFormProps {
   onSignupSuccess: (user: User) => void;
@@ -79,6 +80,9 @@ const SignupForm = ({ onSignupSuccess, onLoginClick }: SignupFormProps) => {
         ...(role === "staff" && { staffType: staffType as StaffType }),
         createdAt: new Date().toISOString(),
       };
+      
+      // Save user to localStorage
+      saveUser(newUser);
       
       toast.success("Account created successfully!");
       onSignupSuccess(newUser);

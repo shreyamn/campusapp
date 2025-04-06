@@ -1,12 +1,12 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { UserRole, User } from "@/types";
+import { saveUser } from "@/services/auth";
 
 // Mock user data for demo purposes
 const mockUsers: User[] = [
@@ -59,6 +59,9 @@ const LoginForm = ({ onLoginSuccess, onSignupClick }: LoginFormProps) => {
       );
       
       if (user) {
+        // Save user to localStorage
+        saveUser(user);
+        
         toast.success(`Welcome back, ${user.name}!`);
         onLoginSuccess(user);
       } else {
