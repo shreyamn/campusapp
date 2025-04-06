@@ -1,61 +1,74 @@
 
-export const getBadgeVariant = (type: string): "default" | "destructive" | "outline" | "secondary" => {
+import { MapLocation } from "@/types";
+
+export const getBadgeVariant = (type: MapLocation['type']) => {
   switch (type) {
     case "building":
       return "default";
     case "lab":
-      return "secondary";
-    case "department":
       return "outline";
     case "cafeteria":
+      return "secondary";
+    case "department":
       return "destructive";
-    default:
+    case "staff":
       return "outline";
+    default:
+      return "default";
   }
 };
 
-// Mock data - in a real app, this would come from an API
-export const getLocations = () => [
-  {
-    id: "1",
-    name: "Admin Building",
-    type: "building",
-    description: "Main administrative offices and conference rooms",
-    coordinates: { x: 20, y: 30 },
-  },
-  {
-    id: "2",
-    name: "Science Lab",
-    type: "lab",
-    description: "Research laboratories for biology and chemistry",
-    coordinates: { x: 45, y: 40 },
-  },
-  {
-    id: "3",
-    name: "Computer Science Department",
-    type: "department",
-    description: "Faculty offices and computer labs",
-    coordinates: { x: 60, y: 35 },
-  },
-  {
-    id: "4",
-    name: "Main Cafeteria",
-    type: "cafeteria",
-    description: "Campus dining facility with various food options",
-    coordinates: { x: 35, y: 60 },
-  },
-  {
-    id: "5",
-    name: "Central Library",
-    type: "building",
-    description: "Main campus library with study spaces",
-    coordinates: { x: 75, y: 50 },
-  },
-  {
-    id: "6",
-    name: "Student Center",
-    type: "building",
-    description: "Student services and recreational activities",
-    coordinates: { x: 30, y: 75 },
-  },
-];
+export const getLocations = (): MapLocation[] => {
+  return [
+    {
+      id: "1",
+      name: "Main Academic Building",
+      type: "building",
+      description: "Central location for classes and administration offices",
+      coordinates: {
+        x: 150,
+        y: 100
+      }
+    },
+    {
+      id: "2",
+      name: "Computer Science Lab",
+      type: "lab",
+      description: "Advanced computing facilities for students",
+      coordinates: {
+        x: 250,
+        y: 150
+      }
+    },
+    {
+      id: "3",
+      name: "Student Union Cafeteria",
+      type: "cafeteria",
+      description: "Main dining area with various food options",
+      coordinates: {
+        x: 200,
+        y: 250
+      }
+    },
+    {
+      id: "4",
+      name: "Biology Department",
+      type: "department",
+      description: "Facilities for biological studies and research",
+      coordinates: {
+        x: 300,
+        y: 200
+      }
+    },
+    {
+      id: "5",
+      name: "Maintenance Office",
+      type: "staff",
+      description: "Campus maintenance and facilities management",
+      coordinates: {
+        x: 100,
+        y: 300
+      }
+    }
+  ];
+};
