@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Event } from "@/types";
+import { Event, EventType } from "@/types";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,7 +22,7 @@ const EventForm = ({ onSubmit, onCancel, isSubmitting = false }: EventFormProps)
       date: "",
       time: "",
       location: "",
-      type: "Academic",
+      type: "Academic" as EventType,
       organizer: "",
     }
   });
@@ -112,7 +112,7 @@ const EventForm = ({ onSubmit, onCancel, isSubmitting = false }: EventFormProps)
           render={({ field }) => (
             <FormItem>
               <FormLabel>Event Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={(value) => field.onChange(value as EventType)} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select event type" />

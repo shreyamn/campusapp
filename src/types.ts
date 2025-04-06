@@ -1,8 +1,9 @@
 
+// User types
 export type UserRole = "student" | "faculty" | "staff" | "admin";
-export type Major = "Biology" | "Mathematics" | "Computer Science" | "Nursing" | string;
-export type Department = "Biology" | "Mathematics" | "Computer Science" | "Nursing" | "Physics" | "Chemistry" | "Economics" | string;
-export type StaffType = "Event Manager" | "Cleaning" | string;
+export type Major = "Biology" | "Mathematics" | "Computer Science" | "Nursing";
+export type Department = "Biology" | "Mathematics" | "Computer Science" | "Nursing" | "Physics" | "Chemistry" | "Economics";
+export type StaffType = "Event Manager" | "Cleaning";
 
 export interface User {
   id: string;
@@ -16,16 +17,8 @@ export interface User {
   createdAt?: string;
 }
 
-export interface MapLocation {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-  coordinates: {
-    x: number;
-    y: number;
-  };
-}
+// Event types
+export type EventType = "Academic" | "Cultural" | "Club" | "Staff";
 
 export interface Event {
   id: string;
@@ -34,7 +27,19 @@ export interface Event {
   date: string;
   time: string;
   location: string;
-  type: 'Academic' | 'Cultural' | 'Club' | 'Staff';
-  department?: Department;
+  type: EventType;
   organizer: string;
+  department?: string;
+}
+
+// Club types
+export interface Club {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  members: number;
+  president: string;
+  meetingDay: string;
+  location: string;
 }
