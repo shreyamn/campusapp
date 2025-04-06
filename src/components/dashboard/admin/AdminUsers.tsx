@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { User, UserRole } from "@/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { getAllUsers } from "@/services/auth";
 
 interface AdminUsersProps {
   onBack: () => void;
@@ -30,25 +31,11 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
-  // Load saved users from localStorage on component mount
+  // Load all users from localStorage on component mount
   useEffect(() => {
-    const savedUsers = localStorage.getItem('admin-users');
-    if (savedUsers) {
-      try {
-        const parsedUsers = JSON.parse(savedUsers);
-        // Ensure all loaded users have the required properties
-        const validUsers: User[] = parsedUsers.map((user: any) => ({
-          id: user.id || `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          name: user.name || "",
-          email: user.email || "",
-          rollNumber: user.rollNumber || "",
-          role: user.role || "student",
-        }));
-        setUsers(validUsers);
-      } catch (error) {
-        console.error("Error parsing users from localStorage:", error);
-        setUsers([]);
-      }
+    const allUsers = getAllUsers();
+    if (allUsers && allUsers.length > 0) {
+      setUsers(allUsers);
     }
   }, []);
 
