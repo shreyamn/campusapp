@@ -34,7 +34,21 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
   useEffect(() => {
     const savedUsers = localStorage.getItem('admin-users');
     if (savedUsers) {
-      setUsers(JSON.parse(savedUsers));
+      try {
+        const parsedUsers = JSON.parse(savedUsers);
+        // Ensure all loaded users have the required properties
+        const validUsers: User[] = parsedUsers.map((user: any) => ({
+          id: user.id || `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          name: user.name || "",
+          email: user.email || "",
+          rollNumber: user.rollNumber || "",
+          role: user.role || "student",
+        }));
+        setUsers(validUsers);
+      } catch (error) {
+        console.error("Error parsing users from localStorage:", error);
+        setUsers([]);
+      }
     }
   }, []);
 
@@ -44,9 +58,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
       localStorage.setItem('admin-users', JSON.stringify(users));
       
       // Show success toast when users are saved
-      if (users.length > 0) {
-        toast.success("Users data saved successfully");
-      }
+      toast.success("Users data saved successfully");
     }
   }, [users]);
 
@@ -64,14 +76,23 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
     if (editingUser) {
       // Update existing user
       setUsers(users.map(user => 
-        user.id === editingUser.id ? { ...data, id: user.id } : user
+        user.id === editingUser.id ? { 
+          ...user,
+          name: data.name,
+          email: data.email,
+          rollNumber: data.rollNumber,
+          role: data.role 
+        } : user
       ));
       setEditingUser(null);
     } else {
-      // Add new user
+      // Add new user with all required properties
       const newUser: User = {
-        ...data,
-        id: `user-${Date.now()}`,
+        id: `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        name: data.name,
+        email: data.email,
+        rollNumber: data.rollNumber,
+        role: data.role,
       };
       setUsers([...users, newUser]);
     }
