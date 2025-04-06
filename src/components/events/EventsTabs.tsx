@@ -6,9 +6,10 @@ import EventsTabContent from "./EventsTabContent";
 interface EventsTabsProps {
   events: Event[];
   getEventTypeColor: (type: string) => string;
+  isLoading?: boolean;
 }
 
-const EventsTabs = ({ events, getEventTypeColor }: EventsTabsProps) => {
+const EventsTabs = ({ events, getEventTypeColor, isLoading = false }: EventsTabsProps) => {
   return (
     <Tabs defaultValue="all" className="w-full">
       <TabsList>
@@ -23,6 +24,7 @@ const EventsTabs = ({ events, getEventTypeColor }: EventsTabsProps) => {
         value="all" 
         events={events} 
         getEventTypeColor={getEventTypeColor}
+        isLoading={isLoading}
       />
       
       {["academic", "cultural", "club", "staff"].map((type) => (
@@ -32,6 +34,7 @@ const EventsTabs = ({ events, getEventTypeColor }: EventsTabsProps) => {
           events={events} 
           getEventTypeColor={getEventTypeColor}
           filterByType={true}
+          isLoading={isLoading}
         />
       ))}
     </Tabs>

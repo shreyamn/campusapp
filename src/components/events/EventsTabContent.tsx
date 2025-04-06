@@ -8,13 +8,15 @@ interface EventsTabContentProps {
   events: Event[];
   getEventTypeColor: (type: string) => string;
   filterByType?: boolean;
+  isLoading?: boolean;
 }
 
 const EventsTabContent = ({ 
   value, 
   events, 
   getEventTypeColor,
-  filterByType = false 
+  filterByType = false,
+  isLoading = false
 }: EventsTabContentProps) => {
   // If we need to filter by type and the value is not 'all', filter the events
   const filteredEvents = filterByType && value !== 'all' 
@@ -25,7 +27,8 @@ const EventsTabContent = ({
     <TabsContent value={value} className="mt-4">
       <EventsList 
         events={filteredEvents} 
-        getEventTypeColor={getEventTypeColor} 
+        getEventTypeColor={getEventTypeColor}
+        isLoading={isLoading}
       />
     </TabsContent>
   );
