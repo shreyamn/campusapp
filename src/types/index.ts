@@ -1,7 +1,7 @@
 
 export type UserRole = "student" | "faculty" | "staff" | "admin";
 export type Major = "Biology" | "Mathematics" | "Computer Science" | "Nursing";
-export type Department = "Biology" | "Mathematics" | "Computer Science" | "Nursing" | "Physics" | "Chemistry" | "Economics";
+export type Department = "Biology" | "Mathematics" | "Computer Science" | "Nursing";
 export type StaffType = "Event Manager" | "Cleaning";
 export type EventType = "Academic" | "Cultural" | "Club" | "Staff";
 export type LocationType = "building" | "lab" | "cafeteria" | "department" | "staff" | "other";

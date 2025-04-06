@@ -21,7 +21,7 @@ const userFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   rollNumber: z.string().min(1, { message: "Roll number is required" }),
   role: z.enum(["student", "faculty", "staff", "admin"] as const),
-  department: z.enum(["Biology", "Mathematics", "Computer Science", "Nursing", "Physics", "Chemistry", "Economics"] as const).optional(),
+  department: z.enum(["Biology", "Mathematics", "Computer Science", "Nursing"] as const).optional(),
 });
 
 type UserFormValues = z.infer<typeof userFormSchema>;
@@ -30,15 +30,12 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   
-  // List of available departments
+  // List of available departments - updated to only include the four specified departments
   const departments: Department[] = [
     "Biology", 
     "Mathematics", 
     "Computer Science", 
-    "Nursing",
-    "Physics",
-    "Chemistry",
-    "Economics"
+    "Nursing"
   ];
 
   // Load all users from localStorage on component mount
