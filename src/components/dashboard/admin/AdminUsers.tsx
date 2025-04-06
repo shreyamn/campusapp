@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, UserRole, Department } from "@/types";
+import { User, Department } from "@/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { getAllUsers } from "@/services/auth";
@@ -31,12 +31,7 @@ const AdminUsers = ({ onBack }: AdminUsersProps) => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   
   // List of available departments - updated to only include the four specified departments
-  const departments: Department[] = [
-    "Biology", 
-    "Mathematics", 
-    "Computer Science", 
-    "Nursing"
-  ];
+  const departments = ["Biology", "Mathematics", "Computer Science", "Nursing"] as const;
 
   // Load all users from localStorage on component mount
   useEffect(() => {
