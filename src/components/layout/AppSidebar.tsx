@@ -37,6 +37,7 @@ export function AppSidebar({ user, onLogout }: AppSidebarProps) {
     if (user?.role === "student") setRoleColor("bg-campus-student");
     else if (user?.role === "faculty") setRoleColor("bg-campus-secondary");
     else if (user?.role === "staff") setRoleColor("bg-campus-accent");
+    else if (user?.role === "admin") setRoleColor("bg-red-600");
   }, [user]);
 
   // Base navigation items for all users
@@ -45,50 +46,50 @@ export function AppSidebar({ user, onLogout }: AppSidebarProps) {
       name: "Dashboard",
       icon: HomeIcon,
       path: "/dashboard",
-      showFor: ["student", "faculty", "staff"],
+      showFor: ["student", "faculty", "staff", "admin"],
     },
     {
       name: "Campus Map",
       icon: Map,
       path: "/map",
-      showFor: ["student", "faculty", "staff"],
+      showFor: ["student", "faculty", "staff", "admin"],
     },
     {
       name: "Events",
       icon: CalendarIcon,
       path: "/events",
-      showFor: ["student", "faculty", "staff"],
+      showFor: ["student", "faculty", "staff", "admin"],
     },
     {
       name: "Clubs",
       icon: Users,
       path: "/clubs",
-      showFor: ["student", "faculty"],
+      showFor: ["student", "faculty", "admin"],
     },
     {
       name: "Subjects",
       icon: BookOpen,
       path: "/subjects",
-      showFor: ["student"], // Changed: only show for students
+      showFor: ["student", "admin"],
     },
     {
       name: "Notifications",
       icon: Bell,
       path: "/notifications",
-      showFor: ["student", "faculty", "staff"],
+      showFor: ["student", "faculty", "staff", "admin"],
     },
     {
       name: "Support",
       icon: HelpCircle,
       path: "/support",
-      showFor: ["student", "faculty", "staff"],
+      showFor: ["student", "faculty", "staff", "admin"],
     },
   ];
 
-  // Filter nav items based on user role
-  const filteredNavItems = navItems.filter((item) => 
-    user && item.showFor.includes(user.role)
-  );
+  // Filter nav items based on user role (admin sees everything)
+  const filteredNavItems = user?.role === "admin" 
+    ? navItems
+    : navItems.filter(item => user && item.showFor.includes(user.role));
 
   return (
     <Sidebar className="border-r">

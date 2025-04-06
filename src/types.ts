@@ -1,6 +1,5 @@
-
 // User roles
-export type UserRole = "student" | "faculty" | "staff";
+export type UserRole = "student" | "faculty" | "staff" | "admin";
 
 // Student major
 export type Major = "Biology" | "Mathematics" | "Computer Science" | "Nursing" | string;

@@ -57,11 +57,7 @@ const App = () => {
                 <Route path="/map" element={<Map />} />
                 <Route path="/events" element={<Events />} />
                 <Route path="/clubs" element={<Clubs />} />
-                {/* Only show subjects to students */}
-                <Route 
-                  path="/subjects" 
-                  element={user?.role === 'student' ? <Subjects /> : <Navigate to="/dashboard" />} 
-                />
+                <Route path="/subjects" element={<Subjects />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/support" element={<Support />} />
               </Route>
