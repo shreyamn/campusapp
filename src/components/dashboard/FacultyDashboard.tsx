@@ -5,38 +5,79 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle, Clock, Users, FileText, Calendar } from "lucide-react";
+import { toast } from "sonner";
 
 interface FacultyDashboardProps {
   user: User;
 }
 
 const FacultyDashboard = ({ user }: FacultyDashboardProps) => {
-  // Mock data - in a real app, this would come from an API
-  const courses = [
-    {
-      id: "1",
-      name: "Introduction to Programming",
-      code: "CS101",
-      students: 45,
-      nextClass: "Today, 10:00 AM",
-      room: "R201",
-      pending: 12,
-    },
-    {
-      id: "2",
-      name: "Advanced Database Systems",
-      code: "CS403",
-      students: 28,
-      nextClass: "Tomorrow, 2:00 PM",
-      room: "R105",
-      pending: 5,
-    },
-  ];
+  // Filter courses based on faculty's department
+  const getCoursesByDepartment = () => {
+    // All possible courses
+    const allCourses = [
+      {
+        id: "1",
+        name: "Introduction to Programming",
+        code: "CS101",
+        department: "Computer Science",
+        students: 45,
+        nextClass: "Today, 10:00 AM",
+        room: "R201",
+        pending: 12,
+      },
+      {
+        id: "2",
+        name: "Advanced Database Systems",
+        code: "CS403",
+        department: "Computer Science",
+        students: 28,
+        nextClass: "Tomorrow, 2:00 PM",
+        room: "R105",
+        pending: 5,
+      },
+      {
+        id: "3",
+        name: "Cell Biology",
+        code: "BIO201",
+        department: "Biology",
+        students: 38,
+        nextClass: "Wednesday, 9:00 AM",
+        room: "R302",
+        pending: 8,
+      },
+      {
+        id: "4",
+        name: "Linear Algebra",
+        code: "MATH301",
+        department: "Mathematics",
+        students: 32,
+        nextClass: "Thursday, 11:00 AM",
+        room: "R401",
+        pending: 3,
+      },
+      {
+        id: "5",
+        name: "Medical Ethics",
+        code: "NUR205",
+        department: "Nursing",
+        students: 40,
+        nextClass: "Friday, 1:00 PM",
+        room: "R501",
+        pending: 10,
+      },
+    ];
+
+    // Return only courses matching the faculty's department
+    return allCourses.filter(course => course.department === user.department);
+  };
+
+  const courses = getCoursesByDepartment();
 
   const upcomingSchedule = [
     {
       id: "1",
-      title: "CS101 Lecture",
+      title: `${courses[0]?.code || "Course"} Lecture`,
       time: "10:00 AM - 11:30 AM",
       room: "R201",
     },
@@ -75,50 +116,81 @@ const FacultyDashboard = ({ user }: FacultyDashboardProps) => {
     },
   ];
 
+  // Button action handlers
+  const handleRefresh = () => {
+    toast.success("Dashboard refreshed successfully");
+  };
+
+  const handleCourseDetails = (courseId: string) => {
+    toast.info(`Viewing details for course ${courseId}`);
+  };
+
+  const handleGradeAssignments = (courseId: string) => {
+    toast.info(`Grading assignments for course ${courseId}`);
+  };
+
+  const handleManageClass = (courseId: string) => {
+    toast.info(`Managing class ${courseId}`);
+  };
+
+  const handleViewCalendar = () => {
+    toast.info("Opening full calendar");
+  };
+
+  const handleViewAllSubmissions = () => {
+    toast.info("Viewing all student submissions");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="campus-heading">Faculty Dashboard</h1>
-        <Button variant="outline">Refresh</Button>
+        <Button variant="outline" onClick={handleRefresh}>Refresh</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="md:col-span-2">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">My Courses</CardTitle>
-            <CardDescription>Currently teaching</CardDescription>
+            <CardDescription>Currently teaching {user.department} courses</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {courses.map((course) => (
-                <div key={course.id} className="campus-card">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-medium">{course.name}</h3>
-                      <p className="text-sm text-muted-foreground">{course.code}</p>
+            {courses.length === 0 ? (
+              <div className="p-6 text-center">
+                <p className="text-muted-foreground">No courses available for your department.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {courses.map((course) => (
+                  <div key={course.id} className="campus-card">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-medium">{course.name}</h3>
+                        <p className="text-sm text-muted-foreground">{course.code}</p>
+                      </div>
+                      <Badge variant="secondary">{course.students} students</Badge>
                     </div>
-                    <Badge variant="secondary">{course.students} students</Badge>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{course.nextClass}</span>
+                    
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{course.nextClass}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{course.pending} pending reviews</span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{course.pending} pending reviews</span>
+                    
+                    <div className="flex justify-end mt-4 space-x-2">
+                      <Button variant="ghost" size="sm" onClick={() => handleCourseDetails(course.id)}>Course Details</Button>
+                      <Button variant="outline" size="sm" onClick={() => handleGradeAssignments(course.id)}>Grade Assignments</Button>
+                      <Button size="sm" onClick={() => handleManageClass(course.id)}>Manage Class</Button>
                     </div>
                   </div>
-                  
-                  <div className="flex justify-end mt-4 space-x-2">
-                    <Button variant="ghost" size="sm">Course Details</Button>
-                    <Button variant="outline" size="sm">Grade Assignments</Button>
-                    <Button size="sm">Manage Class</Button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -144,7 +216,7 @@ const FacultyDashboard = ({ user }: FacultyDashboardProps) => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full">
+            <Button variant="ghost" size="sm" className="w-full" onClick={handleViewCalendar}>
               View full calendar
             </Button>
           </CardFooter>
@@ -176,7 +248,7 @@ const FacultyDashboard = ({ user }: FacultyDashboardProps) => {
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full">
+            <Button variant="ghost" size="sm" className="w-full" onClick={handleViewAllSubmissions}>
               View all submissions
             </Button>
           </CardFooter>

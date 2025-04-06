@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Clock, Calendar, BookOpen, CheckCircle, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 interface StudentDashboardProps {
   user: User;
@@ -69,11 +70,24 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
     },
   ];
 
+  // Button handlers
+  const handleRefresh = () => {
+    toast.success("Dashboard refreshed successfully");
+  };
+
+  const handleViewAllEvents = () => {
+    toast.info("Viewing all events");
+  };
+
+  const handleViewAllAnnouncements = () => {
+    toast.info("Viewing all announcements");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="campus-heading">Student Dashboard</h1>
-        <Button variant="outline">Refresh</Button>
+        <Button variant="outline" onClick={handleRefresh}>Refresh</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -125,7 +139,7 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
                   </Badge>
                 </div>
               ))}
-              <Button variant="ghost" size="sm" className="w-full">
+              <Button variant="ghost" size="sm" className="w-full" onClick={handleViewAllEvents}>
                 View all events
               </Button>
             </div>
@@ -154,7 +168,7 @@ const StudentDashboard = ({ user }: StudentDashboardProps) => {
                   </div>
                 </div>
               ))}
-              <Button variant="ghost" size="sm" className="w-full">
+              <Button variant="ghost" size="sm" className="w-full" onClick={handleViewAllAnnouncements}>
                 View all announcements
               </Button>
             </div>

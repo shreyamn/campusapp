@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Clock, MapPin, AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
 
 interface StaffDashboardProps {
   user: User;
@@ -79,11 +80,48 @@ const StaffDashboard = ({ user }: StaffDashboardProps) => {
     },
   ];
 
+  // Button handlers
+  const handleRefresh = () => {
+    toast.success("Dashboard refreshed successfully");
+  };
+
+  const handleFilter = () => {
+    toast.info("Filtering tasks");
+  };
+
+  const handleFlagIssue = (taskId: string) => {
+    toast.info(`Flagged issue for task ${taskId}`);
+  };
+
+  const handleMarkAsDone = (taskId: string) => {
+    toast.success(`Task ${taskId} marked as done`);
+  };
+
+  const handleAcceptRequest = (requestId: string) => {
+    toast.success(`Request ${requestId} accepted`);
+  };
+
+  const handleDeclineRequest = (requestId: string) => {
+    toast.info(`Request ${requestId} declined`);
+  };
+
+  const handleViewAllRequests = () => {
+    toast.info("Viewing all requests");
+  };
+
+  const handleViewCalendar = () => {
+    toast.info("Viewing calendar");
+  };
+
+  const handleManageEvents = () => {
+    toast.info("Managing events");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="campus-heading">Staff Dashboard</h1>
-        <Button variant="outline">Refresh</Button>
+        <Button variant="outline" onClick={handleRefresh}>Refresh</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -94,7 +132,7 @@ const StaffDashboard = ({ user }: StaffDashboardProps) => {
                 <CardTitle className="text-lg">Current Tasks</CardTitle>
                 <CardDescription>Tasks assigned to you</CardDescription>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleFilter}>
                 <Clock className="mr-2 h-4 w-4" />
                 Filter
               </Button>
@@ -144,12 +182,13 @@ const StaffDashboard = ({ user }: StaffDashboardProps) => {
                   </div>
                   
                   <div className="flex justify-end mt-4 space-x-2">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => handleFlagIssue(task.id)}>
                       Flag Issue
                     </Button>
                     <Button
                       variant={task.status === "completed" ? "outline" : "default"}
                       size="sm"
+                      onClick={() => handleMarkAsDone(task.id)}
                     >
                       {task.status === "completed" ? "Completed" : "Mark as Done"}
                     </Button>
@@ -180,17 +219,17 @@ const StaffDashboard = ({ user }: StaffDashboardProps) => {
                     Requested: {request.requestedOn}
                   </p>
                   <div className="flex justify-end mt-4 space-x-2">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => handleDeclineRequest(request.id)}>
                       Decline
                     </Button>
-                    <Button size="sm">Accept</Button>
+                    <Button size="sm" onClick={() => handleAcceptRequest(request.id)}>Accept</Button>
                   </div>
                 </div>
               ))}
             </div>
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm" className="w-full">
+            <Button variant="ghost" size="sm" className="w-full" onClick={handleViewAllRequests}>
               View all requests
             </Button>
           </CardFooter>
@@ -226,10 +265,10 @@ const StaffDashboard = ({ user }: StaffDashboardProps) => {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={handleViewCalendar}>
             View Calendar
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleManageEvents}>
             Manage Events
           </Button>
         </CardFooter>

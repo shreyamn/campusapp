@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { User } from "@/types";
 import { useNavigate } from "react-router-dom";
 
@@ -34,10 +34,7 @@ const Subjects = () => {
 
   const viewSchedule = () => {
     // In a real app, this would navigate to a schedule page
-    toast({
-      title: "Schedule View",
-      description: "Viewing your class schedule",
-    });
+    toast.success("Viewing your class schedule");
     // Simulating navigation to a schedule route
     // navigate("/schedule");
   };
@@ -47,10 +44,7 @@ const Subjects = () => {
     
     // Simulate loading
     setTimeout(() => {
-      toast({
-        title: "Course Materials",
-        description: `Viewing materials for ${subjectTitle}`,
-      });
+      toast.success(`Viewing materials for ${subjectTitle}`);
       setIsLoading({ ...isLoading, [`materials-${subjectTitle}`]: false });
     }, 800);
   };
@@ -60,10 +54,7 @@ const Subjects = () => {
     
     // Simulate loading
     setTimeout(() => {
-      toast({
-        title: "Class Joined",
-        description: `You've joined the ${subjectTitle} virtual classroom`,
-      });
+      toast.success(`You've joined the ${subjectTitle} virtual classroom`);
       setIsLoading({ ...isLoading, [`join-${subjectTitle}`]: false });
     }, 800);
   };
